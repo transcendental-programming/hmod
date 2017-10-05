@@ -77,14 +77,29 @@
     :parent ""
     :id ""))
 
+
+(defn list-id-fields
+  [fields]
+  (filterv #(= (:kind %) :id) fields))
+
+(defn list-child-fields
+  [fields]
+  (filterv #(= (:kind %) :child) fields))
+
+(defn list-not-id-fields
+  [fields]
+  (filterv #(not= (:kind %) :id) fields))
+
 (defn g-builder-constructor
   [fields]
-  (g-method ""
-            "Builder"
-            []
-            (apply str (map #(g-assign (:name %)
-                                       "new ArrayList<>()")
-                            (list-child-fields fields)))))
+  (let [id-fields (list-id-fields fields)]
+    (g-method ""
+              "Builder"
+              id-fields
+              (apply str
+                     (concat (map #(g-assign-this (:name %)) id-fields)
+                             (map #(g-assign (:name %) "new ArrayList<>()")
+                                  (list-child-fields fields)))))))
 
 (defn g-list-params
   [fields]
@@ -108,10 +123,6 @@
        (g-builder-constructor fields)
        (g-builder-build name fields)
        (g-end-class)))
-
-(defn list-child-fields
-  [fields]
-  (filterv #(= (:kind %) :child) fields))
 
 (defn g-do-attachment
   [field]
@@ -145,6 +156,9 @@
             (str "set" (->PascalCase (:name field)))
             [field]
             (g-assign-this (:name field))))
+
+(defn g-bean-build
+  [])
 
 (defn g-bean
   [fields]
