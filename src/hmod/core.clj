@@ -1,4 +1,5 @@
-(ns hmod.core
+(
+ ns hmod.core
   (:require [clojure.java.io :as io]
             [hmod.java-out :refer [java-out]])
   (:use [camel-snake-kebab.core])
@@ -32,6 +33,7 @@
 (defn field
   [name type kind]
   {:name name :type type :kind kind})
+
 
 (defn child-field
   [type-name]
@@ -74,7 +76,11 @@
 
 (def base-types {"String" {:name "String"}
                  "boolean" {:name "boolean"}
-                 "Date" {:name "Date"}})
+                 "Date" {:name "Date"}
+                 "Integer" {:name "Integer"}
+                 "double"  {:name "double"}
+                 "int" {:name "int"}
+                 "Long" {:name "Long"} })
 
 (defn list-available-types
   [concepts]
