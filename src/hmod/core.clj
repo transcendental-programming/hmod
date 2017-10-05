@@ -6,6 +6,7 @@
 
 ;; .hmod loading
 
+;; TODO: add message error when the directory doesn't exists
 (defn ls
   [path]
   (map (fn [dir] (str path "/" dir))
@@ -74,6 +75,7 @@
 
 (def base-types {"String" {:name "String"}
                  "boolean" {:name "boolean"}
+                 "double" {:name "double"}
                  "Date" {:name "Date"}})
 
 (defn list-available-types
@@ -121,3 +123,8 @@
                                       (load-concepts path)))]
     (let [available-types (list-available-types compiled-concepts)]
       (map #(link-concept % available-types) compiled-concepts))))
+
+
+;;; development helpers
+
+(defn tconcepts [] (retrieve-concepts "./resources/input"))

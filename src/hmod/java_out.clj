@@ -61,13 +61,19 @@
   [name]
   (g-assign (str "this." name) name))
 
+(defn g-null-check
+  [name]
+  (str "if (null != " name ")"))
+
 (defn g-builder-set-general
   [field]
-  (g-method "Builder"
-            (:name field)
-            [field]
-            (str (g-assign-this (:name field))
-                 " return this;")))
+  (let [name (:name field)]
+    (g-method "Builder"
+              name
+              [field]
+              (str (if (:many field) (g-null-check name))
+                   (g-assign-this name)
+                   " return this;"))))
 
 (defn g-builder-set
   [field]
@@ -86,9 +92,11 @@
   [fields]
   (filterv #(= (:kind %) :child) fields))
 
-(defn list-not-id-fields
+(defn list-regular-and-child-fields
   [fields]
-  (filterv #(not= (:kind %) :id) fields))
+  (filterv #(or (= (:kind %) :child)
+                (= (:kind %) :regular))
+           fields))
 
 (defn g-builder-constructor
   [fields]
@@ -158,15 +166,24 @@
             (g-assign-this (:name field))))
 
 (defn g-bean-build
-  [])
+  [concept-name fields]
+  (g-method concept-name
+            "build"
+            []
+            (str "return new " concept-name ".Builder("
+                 (:name (first (list-id-fields fields))) ")"
+                 (apply str (map #(str "." (:name %) "(" (:name %) ")")
+                                 (list-regular-and-child-fields fields)))
+                 ".build();")))
 
 (defn g-bean
-  [fields]
+  [name fields]
   (str "\n// -----------\n"
        (g-begin-static-class "Bean")
        (apply str (map g-member fields))
        (apply str (map g-get fields))
        (apply str (map g-bean-set fields))
+       (g-bean-build name fields)
        (g-end-class)))
 
 
@@ -182,7 +199,7 @@
          (g-constructor name fields)
          (if-let [parent (:parent concept)] (g-attach concept parent))
          (g-builder name fields)
-         (g-bean fields)
+         (g-bean name fields)
          (g-end-class))))
 
 
