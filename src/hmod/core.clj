@@ -1,5 +1,4 @@
-(
- ns hmod.core
+(ns hmod.core
   (:require [clojure.java.io :as io]
             [hmod.java-out :refer [java-out]])
   (:use [camel-snake-kebab.core])
@@ -98,7 +97,7 @@
   [concept available-types]
   (if-let [fields (:fields concept)]
     (assoc concept :fields (map #(assoc % :type
-                                       (link-type (:type %) available-types))
+                                        (link-type (:type %) available-types))
                                 fields))
     concept))
 
@@ -132,4 +131,4 @@
 
 ;;; development helpers
 
-(defn tconcepts [] (retrieve-concepts "./resources/input"))
+(defn tconcepts [] (retrieve-concepts "./src/concepts"))

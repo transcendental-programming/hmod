@@ -1,36 +1,25 @@
 # hmod
 
-FIXME: description
+Communicated-concept incubator.
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Add the following to your `project.clj` `:dependencies`:
+
+  ```clojure
+  [hmod "1.0.0"]
+  ```    
 
 ## Usage
 
-FIXME: explanation
-
-    $ java -jar hmod-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+  ```clojure
+  (defn tconcepts [] (hmod.core/retrieve-concepts "concept-directory"))
+  (hmod.java-out/java-out "output-java-src-directory" "package-name" (tconcepts))
+  ```
 
 ## License
 
-Copyright © 2017 FIXME
+Copyright © 2017 Transcendental Programming <transcendental.programming@yandex.com>
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
