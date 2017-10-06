@@ -131,4 +131,4 @@
 
 ;;; development helpers
 
-(defn tconcepts [] (retrieve-concepts "./src/concepts"))
+(defn say-something [] (println "saying something"))

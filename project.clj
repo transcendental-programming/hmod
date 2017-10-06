@@ -1,4 +1,4 @@
-(defproject org.clojars.transcendental/hmod "1.0.0"
+(defproject hmod "1.0.0-SNAPSHOT"
   :description "Communicated-concept incubator."
   :url "https://github.com/transcendental-programming/hmod"
   :license {:name "Eclipse Public License"
