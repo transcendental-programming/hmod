@@ -77,10 +77,9 @@
 (def base-types {"String" {:name "String"}
                  "boolean" {:name "boolean"}
                  "Date" {:name "Date"}
-                 "Integer" {:name "Integer"}
                  "double"  {:name "double"}
                  "int" {:name "int"}
-                 "Long" {:name "Long"} })
+                 "long" {:name "long"} })
 
 (defn list-available-types
   [concepts]
@@ -128,7 +127,3 @@
     (let [available-types (list-available-types compiled-concepts)]
       (map #(link-concept % available-types) compiled-concepts))))
 
-
-;;; development helpers
-
-(defn say-something [] (println "saying something"))
